@@ -25,6 +25,11 @@ function organizarContratosFirmados() {
   const carpetaFirmados = DriveApp.getFolderById("1DwQRZ4_689QhXt72SuyxcprMalVt4L6L");
   const carpetaClasificados = DriveApp.getFolderById("13Qltz1lpapzbpFctgp7m6grqrjqMiCP6");
   const carpetaContratosParaFirmar = DriveApp.getFolderById("1wWsr-hEDMrUl5r2nm1urp4Fj7UxJOsy9");
+  validarAccesoDrive_([
+    { tipo: "carpeta", nombre: "Firmados", id: "1DwQRZ4_689QhXt72SuyxcprMalVt4L6L" },
+    { tipo: "carpeta", nombre: "Clasificados", id: "13Qltz1lpapzbpFctgp7m6grqrjqMiCP6" },
+    { tipo: "carpeta", nombre: "Contratos para firmar", id: "1wWsr-hEDMrUl5r2nm1urp4Fj7UxJOsy9" }
+  ]);
 
   // Crear o acceder a subcarpeta "Procesados" en 'Firmados'
   let carpetaProcesadosFirmados;

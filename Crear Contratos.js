@@ -40,6 +40,10 @@ function generarContratos() {
 
   const plantillaId = '1pBCfXUOR-bvDe9a9-NKidd_UZajNjaKs13ff9ynn770';
   const carpetaDestino = DriveApp.getFolderById('1wWsr-hEDMrUl5r2nm1urp4Fj7UxJOsy9');
+  validarAccesoDrive_([
+    { tipo: "archivo", nombre: "Plantilla de contrato", id: plantillaId },
+    { tipo: "carpeta", nombre: "Contratos para firmar", id: "1wWsr-hEDMrUl5r2nm1urp4Fj7UxJOsy9" }
+  ]);
 
   for (let i = 1; i < datos.length; i++) {
     const fila = datos[i];
@@ -248,4 +252,25 @@ function eliminarArchivosPreviosContrato_(carpetaDestino, nombre, cedula) {
       archivo.setTrashed(true);
     }
   }
+}
+
+function validarAccesoDrive_(recursos) {
+  recursos.forEach(function(recurso) {
+    try {
+      if (recurso.tipo === "archivo") {
+        DriveApp.getFileById(recurso.id).getName();
+        return;
+      }
+      if (recurso.tipo === "carpeta") {
+        DriveApp.getFolderById(recurso.id).getName();
+        return;
+      }
+      throw new Error("Tipo de recurso no soportado: " + recurso.tipo);
+    } catch (e) {
+      throw new Error(
+        "Sin acceso a " + recurso.tipo + " [" + recurso.nombre + "] con ID " + recurso.id +
+        ". Verifica permisos de la cuenta ejecutora. Detalle: " + e.message
+      );
+    }
+  });
 }
