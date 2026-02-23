@@ -242,14 +242,24 @@ function coincideNombreArchivo_(nombreArchivo, nombre) {
 }
 
 function eliminarArchivosPreviosContrato_(carpetaDestino, nombre, cedula) {
+  const cedulaNormalizada = extraerSoloDigitos_(cedula);
   const archivosAntiguos = carpetaDestino.getFiles();
   while (archivosAntiguos.hasNext()) {
     const archivo = archivosAntiguos.next();
     const nombreArchivo = archivo.getName();
-    const coincideCedula = cedula && nombreArchivo.indexOf(cedula) !== -1;
-    const coincideNombre = coincideNombreArchivo_(nombreArchivo, nombre);
-    if (coincideCedula || coincideNombre) {
+    const coincideCedula = cedulaNormalizada && nombreArchivo.indexOf(cedulaNormalizada) !== -1;
+    const coincideNombre = !cedulaNormalizada && coincideNombreArchivo_(nombreArchivo, nombre);
+    if (!coincideCedula && !coincideNombre) {
+      continue;
+    }
+
+    try {
       archivo.setTrashed(true);
+    } catch (e) {
+      Logger.log(
+        "No se pudo enviar a la papelera el archivo '" + nombreArchivo +
+        "' (ID " + archivo.getId() + "). Se omite. Detalle: " + e.message
+      );
     }
   }
 }
