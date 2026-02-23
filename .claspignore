@@ -1,0 +1,9 @@
+**/**
+!appsscript.json
+!*.js
+!*.gs
+!*.html
+!*.json
+backups/**
+.git/**
+.clasp.json
